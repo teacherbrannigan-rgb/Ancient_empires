@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Ancient Civilizations 360° Hub</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+
+    <style>
+      body { margin: 0; overflow: hidden; font-family: 'Georgia', serif; background-color: #87CEEB; }
+      
+      /* --- BACKGROUND IMAGE --- */
+      #bg-image {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background-image: url('menu-hub-background.jpg'); /* General history backdrop */
+        background-size: cover;
+        background-position: center;
+        z-index: 1;
+      }
+
+      /* --- MENU UI --- */
+      #main-menu {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        z-index: 100; display: flex; flex-direction: column; 
+        align-items: center; justify-content: flex-start;
+        background: rgba(0, 0, 0, 0.55); /* Darkened shield so text stands out sharply */
+        overflow-y: auto; /* Allows scrolling on small phone screens */
+        padding-bottom: 40px;
+      }
+      
+      #main-title {
+        color: #FFD700; /* Gold */
+        text-shadow: 3px 3px 10px rgba(0,0,0,0.9);
+        font-size: 3rem; margin-top: 30px; margin-bottom: 25px;
+        letter-spacing: 5px; text-transform: uppercase;
+        text-align: center;
+      }
+
+      /* --- THREE COLUMN GRID --- */
+      #columns-container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+        width: 90%;
+        max-width: 1200px;
+        padding: 0 10px;
+      }
+
+      @media (max-width: 768px) {
+        /* Collapse columns into a stack on mobile phones */
+        #columns-container { grid-template-columns: 1fr; gap: 20px; }
+      }
+
+      .culture-column {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 215, 0, 0.3);
+        border-radius: 8px;
+        padding: 20px 15px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .culture-column h2 {
+        color: #FFF;
+        font-size: 1.6rem;
+        margin: 0 0 10px 0;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        border-bottom: 2px solid #FFD700;
+        padding-bottom: 5px;
+        width: 100%;
+        text-align: center;
+      }
+
+      .xr-btn {
+        width: 100%;
+        padding: 12px 15px;
+        font-size: 0.95rem;
+        cursor: pointer;
+        border: 2px solid #FFD700;
+        background: rgba(0,0,0,0.7);
+        color: #FFD700;
+        border-radius: 4px;
+        transition: 0.2s;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+      }
+      .xr-btn:hover { 
+        background: #FFD700;
+        color: #000; 
+        box-shadow: 0 0 12px rgba(255, 215, 0, 0.5);
+      }
+
+      /* --- NAVIGATION --- */
+      #backBtn {
+        position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%);
+        z-index: 8888; padding: 15px 40px; background: rgba(0, 0, 0, 0.9);
+        color: #FFD700; border: 2px solid #FFD700; border-radius: 4px;
+        display: none; cursor: pointer; font-weight: bold; font-size: 1.1rem;
+      }
+    </style>
+  </head>
+  <body>
+
+    <div id="bg-image"></div>
+
+    <div id="main-menu">
+      <h1 id="main-title">Ancient Worlds</h1>
+      
+      <div id="columns-container">
+        
+        <div class="culture-column">
+          <h2>Ancient Greece</h2>
+          <button class="xr-btn" onclick="enter360('athens')">Athens</button>
+          <button class="xr-btn" onclick="enter360('sparta')">Sparta</button>
+          <button class="xr-btn" onclick="enter360('delphi')">Delphi</button>
+          <button class="xr-btn" onclick="enter360('thermopylae')">Thermopylae</button>
+          <button class="xr-btn" onclick="enter360('salamis')">Battle of Salamis</button>
+        </div>
+
+        <div class="culture-column">
+          <h2>Ancient Rome</h2>
+          <button class="xr-btn" onclick="enter360('colosseum')">The Colosseum</button>
+          <button class="xr-btn" onclick="enter360('aqueduct')">The Aqueduct</button>
+          <button class="xr-btn" onclick="enter360('temple')">Temple to Jupiter</button>
+          <button class="xr-btn" onclick="enter360('roads')">Roman Roads</button>
+          <button class="xr-btn" onclick="enter360('watling')">Watling Street</button>
+        </div>
+
+        <div class="culture-column">
+          <h2>Ancient Egypt</h2>
+          <button class="xr-btn" onclick="enter360('preKingdom')">Pre-Kingdom</button>
+          <button class="xr-btn" onclick="enter360('firstKingdom')">Old Kingdom</button>
+          <button class="xr-btn" onclick="enter360('middleKingdom')">Middle Kingdom</button>
+          <button class="xr-btn" onclick="enter360('lateKingdom')">Late Kingdom</button>
+          <button class="xr-btn" onclick="enter360('kadesh')">Battle of Kadesh</button>
+        </div>
+
+      </div>
+    </div>
+
+    <a-scene id="mainScene" style="display: none;" vr-mode-ui="enabled: true">
+      <a-assets>
+        <img id="athens" src="360-athens.jpg">
+        <img id="sparta" src="360-sparta.jpg">
+        <img id="delphi" src="360-delphi.jpg">
+        <img id="thermopylae" src="360-thermopylae.jpg">
+        <img id="salamis" src="360-salamis.jpg">
+
+        <img id="colosseum" src="360-colosseum.jpg">
+        <img id="aqueduct" src="360-aqueduct.jpg">
+        <img id="temple" src="360-temple-jupiter.jpg">
+        <img id="roads" src="360-roman-roads.jpg">
+        <img id="watling" src="360-watling-street.jpg">
+
+        <img id="preKingdom" src="360-pre-kingdom.jpg">
+        <img id="firstKingdom" src="360-old-kingdom.jpg">
+        <img id="middleKingdom" src="360-middle-kingdom.jpg">
+        <img id="lateKingdom" src="360-late-kingdom.jpg">
+        <img id="kadesh" src="360-battle-kadesh.jpg">
+      </a-assets>
+
+      <a-sky id="skyBox" radius="100" rotation="0 -90 0"></a-sky>
+      
+      <a-entity camera look-controls="magicWindowTrackingEnabled: true; touchEnabled: true"></a-entity>
+    </a-scene>
+
+    <button id="backBtn" onclick="exit360()">← RETURN TO HUB</button>
+
+    <script>
+      const menu = document.getElementById('main-menu');
+      const bgImage = document.getElementById('bg-image');
+      const scene = document.getElementById('mainScene');
+      const sky = document.getElementById('skyBox');
+      const backBtn = document.getElementById('backBtn');
+
+      function enter360(imgId) {
+        // Safe motion authorization wrapper for classrooms deploying via tablet fleets
+        if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+          DeviceOrientationEvent.requestPermission()
+            .then(permissionState => {
+              if (permissionState === 'granted') {
+                launchPanoramicView(imgId);
+              }
+            })
+            .catch(console.error);
+        } else {
+          launchPanoramicView(imgId);
+        }
+      }
+
+      function launchPanoramicView(imgId) {
+        menu.style.display = 'none';
+        bgImage.style.display = 'none';
+        scene.style.display = 'block';
+        backBtn.style.display = 'block';
+
+        sky.setAttribute('src', '#' + imgId);
+        scene.resize();
+      }
+
+      function exit360() {
+        location.reload(); // Instantly purges cache, resets memory, and re-levels sensors
+      }
+    </script>
+  </body>
+</html>
