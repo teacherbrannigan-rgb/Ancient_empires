@@ -5,6 +5,7 @@
     <title>Ancient Civilizations 360° Hub</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     
+    <!-- A-Frame Library for Panoramic Rendering -->
     <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
 
     <style>
@@ -13,7 +14,7 @@
       /* --- BACKGROUND IMAGE --- */
       #bg-image {
         position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background-image: url('menu-hub-background.jpg'); /* General history backdrop */
+        background-image: url('menu-hub-background.jpg'); 
         background-size: cover;
         background-position: center;
         z-index: 1;
@@ -24,8 +25,8 @@
         position: fixed; top: 0; left: 0; width: 100%; height: 100%;
         z-index: 100; display: flex; flex-direction: column; 
         align-items: center; justify-content: flex-start;
-        background: rgba(0, 0, 0, 0.55); /* Darkened shield so text stands out sharply */
-        overflow-y: auto; /* Allows scrolling on small phone screens */
+        background: rgba(0, 0, 0, 0.55); 
+        overflow-y: auto; 
         padding-bottom: 40px;
       }
       
@@ -48,7 +49,6 @@
       }
 
       @media (max-width: 768px) {
-        /* Collapse columns into a stack on mobile phones */
         #columns-container { grid-template-columns: 1fr; gap: 20px; }
       }
 
@@ -107,69 +107,74 @@
   </head>
   <body>
 
+    <!-- 1. DYNAMIC BACKGROUND -->
     <div id="bg-image"></div>
 
+    <!-- 2. PILOT HUB MENU -->
     <div id="main-menu">
       <h1 id="main-title">Ancient Worlds</h1>
       
       <div id="columns-container">
         
+        <!-- COLUMN 1: ANCIENT GREECE (UPDATED) -->
         <div class="culture-column">
           <h2>Ancient Greece</h2>
           <button class="xr-btn" onclick="enter360('athens')">Athens</button>
           <button class="xr-btn" onclick="enter360('sparta')">Sparta</button>
           <button class="xr-btn" onclick="enter360('delphi')">Delphi</button>
-          <button class="xr-btn" onclick="enter360('thermopylae')">Thermopylae</button>
-          <button class="xr-btn" onclick="enter360('salamis')">Battle of Salamis</button>
+          <button class="xr-btn" onclick="enter360('greekVillage')">Greek Village</button>
         </div>
 
+        <!-- COLUMN 2: ANCIENT ROME -->
         <div class="culture-column">
           <h2>Ancient Rome</h2>
           <button class="xr-btn" onclick="enter360('colosseum')">The Colosseum</button>
           <button class="xr-btn" onclick="enter360('aqueduct')">The Aqueduct</button>
           <button class="xr-btn" onclick="enter360('temple')">Temple to Jupiter</button>
           <button class="xr-btn" onclick="enter360('roads')">Roman Roads</button>
-          <button class="xr-btn" onclick="enter360('watling')">Watling Street</button>
         </div>
 
+        <!-- COLUMN 3: ANCIENT EGYPT -->
         <div class="culture-column">
           <h2>Ancient Egypt</h2>
           <button class="xr-btn" onclick="enter360('preKingdom')">Pre-Kingdom</button>
           <button class="xr-btn" onclick="enter360('firstKingdom')">Old Kingdom</button>
           <button class="xr-btn" onclick="enter360('middleKingdom')">Middle Kingdom</button>
           <button class="xr-btn" onclick="enter360('lateKingdom')">Late Kingdom</button>
-          <button class="xr-btn" onclick="enter360('kadesh')">Battle of Kadesh</button>
         </div>
 
       </div>
     </div>
 
+    <!-- 3. INTERACTIVE 360° ENGINE -->
     <a-scene id="mainScene" style="display: none;" vr-mode-ui="enabled: true">
       <a-assets>
-        <img id="athens" src="360-athens.jpg">
-        <img id="sparta" src="360-sparta.jpg">
-        <img id="delphi" src="360-delphi.jpg">
-        <img id="thermopylae" src="360-thermopylae.jpg">
-        <img id="salamis" src="360-salamis.jpg">
+        <!-- Greece Panoramic Assets -->
+        <img id="athens" src="360-athens.png">
+        <img id="sparta" src="360-sparta.png">
+        <img id="delphi" src="360-delphi.png">
+        <img id="greekVillage" src="360-greek-village.png">
 
-        <img id="colosseum" src="360-colosseum.jpg">
-        <img id="aqueduct" src="360-aqueduct.jpg">
-        <img id="temple" src="360-temple-jupiter.jpg">
-        <img id="roads" src="360-roman-roads.jpg">
-        <img id="watling" src="360-watling-street.jpg">
+        <!-- Rome Panoramic Assets -->
+        <img id="colosseum" src="360-colosseum.png">
+        <img id="aqueduct" src="360-aqueduct.png">
+        <img id="temple" src="360-temple-jupiter.png">
+        <img id="roads" src="360-roman-roads.png">
 
-        <img id="preKingdom" src="360-pre-kingdom.jpg">
-        <img id="firstKingdom" src="360-old-kingdom.jpg">
-        <img id="middleKingdom" src="360-middle-kingdom.jpg">
-        <img id="lateKingdom" src="360-late-kingdom.jpg">
-        <img id="kadesh" src="360-battle-kadesh.jpg">
+        <!-- Egypt Panoramic Assets -->
+        <img id="preKingdom" src="360-pre-kingdom.png">
+        <img id="firstKingdom" src="360-old-kingdom.png">
+        <img id="middleKingdom" src="360-middle-kingdom.png">
+        <img id="lateKingdom" src="360-late-kingdom.png">
       </a-assets>
 
       <a-sky id="skyBox" radius="100" rotation="0 -90 0"></a-sky>
       
+      <!-- Native Mobile Gyroscope and Interaction Rig -->
       <a-entity camera look-controls="magicWindowTrackingEnabled: true; touchEnabled: true"></a-entity>
     </a-scene>
 
+    <!-- 4. RETURN PORTAL -->
     <button id="backBtn" onclick="exit360()">← RETURN TO HUB</button>
 
     <script>
@@ -180,7 +185,6 @@
       const backBtn = document.getElementById('backBtn');
 
       function enter360(imgId) {
-        // Safe motion authorization wrapper for classrooms deploying via tablet fleets
         if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
           DeviceOrientationEvent.requestPermission()
             .then(permissionState => {
@@ -205,7 +209,7 @@
       }
 
       function exit360() {
-        location.reload(); // Instantly purges cache, resets memory, and re-levels sensors
+        location.reload(); 
       }
     </script>
   </body>
